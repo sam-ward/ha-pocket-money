@@ -67,5 +67,8 @@ logger:
     custom_components.pocket-money: debug
 ```
 
+## Acknowledgements
+[Icon by vexels.com](https://www.vexels.com/png-svg/preview/263263/money-business-piggy-bank-icon)
+
 ## Donation
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/samward271)
