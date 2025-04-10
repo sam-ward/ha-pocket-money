@@ -5,15 +5,6 @@ The Pocket Money integration allows you to setup a simple account in Home Assist
 
 ## Installation
 
-### HACS - Recommended
-- Have [HACS](https://hacs.xyz) installed, this will allow you to easily manage and track updates.
-- Inside HACS click 'Explore & download repositories'
-- Search for 'Pocket Money'.
-- Click on found integration.
-- Click Download this repository with HACS.
-- Restart Home-Assistant.
-- Follow configuration steps below.
-
 ### Manual
 - Copy directory `custom_components/pocket-money` to your `<config dir>/custom_components` directory.
 - Restart Home-Assistant.
