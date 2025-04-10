@@ -1,4 +1,4 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)  [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](paypal.me/samward271)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)  [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/samward271)
 
 # Pocket Money
 The Pocket Money integration allows you to setup a simple account in Home Assistant that can have money credited to and debited from, while tracking the balance and transaction history.  Ideal for a simple pocket money tracker for children.
@@ -68,4 +68,4 @@ logger:
 ```
 
 ## Donation
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](paypal.me/samward271)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/samward271)
