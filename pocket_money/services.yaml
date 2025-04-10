@@ -1,0 +1,56 @@
+# Service definition used by the UI as a template for dynamically created services
+# (e.g., pocket_money.alice_add_transaction). Call via device targeting.
+add_transaction:
+  # Name displayed in the service list
+  name: Add Pocket Money Transaction
+  # Description shown when the service is selected
+  description: >
+    Adds or subtracts an amount from a specific kid's pocket money balance.
+    NOTE: Call this service by targeting the specific kid's device.
+  # Target definition (optional but recommended for clarity)
+  target:
+    device:
+      integration: pocket_money # Links it to devices from this integration
+  # Defines the input fields for the service call UI
+  fields:
+    # 'amount' field definition
+    amount:
+      # Name shown next to the input field
+      name: Amount
+      # Longer description tooltip/help text
+      description: The amount to add (positive number) or subtract (negative number).
+      # Marks the field as mandatory
+      required: true
+      # Example value shown in the UI
+      example: 5.00
+      # Defines the UI input element
+      selector:
+        # Use a number input box
+        number:
+          # Minimum step value (for currencies with cents/pence)
+          step: 0.01
+          # Display mode (box is standard)
+          mode: box
+          # Optional min/max constraints if desired
+          # min: -1000
+          # max: 1000
+
+    # 'description' field definition
+    description:
+      name: Description
+      description: An optional description for the transaction (e.g., 'Chores', 'Movie Ticket').
+      required: false # Optional field
+      example: "Weekly Allowance"
+      selector:
+        # Use a text input box
+        text:
+
+    # 'timestamp' field definition
+    timestamp:
+      name: Transaction Timestamp (Optional)
+      description: The date and time the transaction occurred (ISO 8601 format, e.g., "YYYY-MM-DDTHH:MM:SSZ"). Defaults to the current time if omitted.
+      required: false # Optional field
+      example: "2023-10-27T10:30:00+01:00"
+      selector:
+        # Use a text input box for the ISO string
+        text:

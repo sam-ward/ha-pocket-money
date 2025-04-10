@@ -1,0 +1,27 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Pocket Money Tracker Setup",
+                "description": "Enter the details for the kid whose pocket money you want to track. Add separate instances of this integration for each kid.",
+                "data": {
+                    "kid_name": "Kid's Name",
+                    "currency_symbol": "Currency Symbol",
+                    "initial_balance": "Initial Balance",
+                    "max_transactions": "Max Transactions Stored"
+                }
+            }
+        },
+        "error": {
+            "kid_name_empty": "Please enter the kid's name.",
+            "cannot_connect": "Failed to connect",
+            "unknown": "An unknown error occurred"
+        },
+        "abort": {
+            "already_configured": "Pocket money tracker for this kid is already configured."
+        }
+    },
+    "options": {
+        "Add translations": "if you implement an Options Flow"
+    }
+}
