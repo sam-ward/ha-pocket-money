@@ -40,7 +40,8 @@ Enabled by default:
 
 ```text
 sensor.pocket_money_<name> - The current balance of the account.
-It also contains a 'Transactions" attribute that contains the last x number of transactions (where x is the value configured when adding the integration, by default 50)
+It also contains a 'Transactions" attribute that contains the last x number of transactions
+(where x is the value configured when adding the integration, by default 50)
 ```
 
 ## Tips and Tricks
