@@ -1,4 +1,5 @@
 {
   "name": "Pocket Money",
   "homeassistant": "2025.1.0"
+  "domains": ["pocket_money"]
 }
