@@ -24,9 +24,6 @@ Adding Pockey Money to your Home Assistant instance can be done via the integrat
 After successful set up a standard set of sensors are enabled. 
 
 ## Available Sensors
-
-Not every sensor holds meaningful values, it depends on the tracking and health devices you use, or the apps you have connected.
-
 Enabled by default:
 
 ```text
