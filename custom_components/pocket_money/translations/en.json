@@ -8,7 +8,8 @@
                     "kid_name": "Kid's Name",
                     "currency_symbol": "Currency Symbol",
                     "initial_balance": "Initial Balance",
-                    "max_transactions": "Max Transactions Stored"
+                    "max_transactions": "Max Transactions Stored",
+                    "log_to_csv": "Log Transactions to CSV File"
                 }
             }
         },

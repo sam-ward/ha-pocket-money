@@ -17,7 +17,9 @@ from .const import (
     CONF_INITIAL_BALANCE,
     DEFAULT_INITIAL_BALANCE,
     CONF_MAX_TRANSACTIONS,
-    DEFAULT_MAX_TRANSACTIONS
+    DEFAULT_MAX_TRANSACTIONS,
+    CONF_LOG_TO_CSV,
+    DEFAULT_LOG_TO_CSV,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -55,6 +57,7 @@ class PocketMoneyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         CONF_CURRENCY_SYMBOL: user_input[CONF_CURRENCY_SYMBOL],
                         CONF_INITIAL_BALANCE: user_input[CONF_INITIAL_BALANCE],
                         CONF_MAX_TRANSACTIONS: user_input[CONF_MAX_TRANSACTIONS],
+                        CONF_LOG_TO_CSV: user_input[CONF_LOG_TO_CSV],
                     }
                 )
 
@@ -69,6 +72,8 @@ class PocketMoneyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Optional(CONF_MAX_TRANSACTIONS, default=DEFAULT_MAX_TRANSACTIONS): selector.NumberSelector(
                     selector.NumberSelectorConfig(min=1, max=500, step=1, mode=selector.NumberSelectorMode.BOX)
                 ),
+                # Add the CSV logging toggle
+                vol.Optional(CONF_LOG_TO_CSV, default=DEFAULT_LOG_TO_CSV): selector.BooleanSelector(),
             }
         )
 
@@ -86,3 +91,9 @@ class PocketMoneyConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     # @callback
     # def async_get_options_flow(config_entry):
     #    return PocketMoneyOptionsFlowHandler(config_entry)
+
+# class PocketMoneyOptionsFlowHandler(config_entries.OptionsFlow):
+#     # ... implementation ...
+#     async def async_step_init(self, user_input=None):
+#         # Similar schema building as config flow, but use self.config_entry.options
+#         # Return self.async_create_entry(title="", data=updated_options)
