@@ -10,7 +10,7 @@ This integration allows you to create separate pocket money accounts for each ch
 *   A service call (`pocket_money.kidname_add_transaction`) to easily add or subtract funds.
 *   An optional feature to log all transactions to a CSV file per child.
 
-![Example Screenshot (Optional - Add your own!)](images/overview.png)
+![Example Screenshot](images/overview.png)
 
 ---
 
