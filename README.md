@@ -1,5 +1,5 @@
-<!-- [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)-->  [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/samward271)
-
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/samward271)
+<!-- [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)-->
 # Pocket Money
 **Track your kids' pocket money balances and transaction history directly within Home Assistant.**
 
@@ -10,7 +10,7 @@ This integration allows you to create separate pocket money accounts for each ch
 *   A service call (`pocket_money.kidname_add_transaction`) to easily add or subtract funds.
 *   An optional feature to log all transactions to a CSV file per child.
 
-![Example Screenshot (Optional - Add your own!)](images/overview.png)
+![Example Screenshot](images/overview.png)
 
 ---
 
