@@ -21,8 +21,9 @@ from .const import (
     CONF_CURRENCY_SYMBOL,
     CONF_INITIAL_BALANCE,
     CONF_MAX_TRANSACTIONS,
-    CONF_LOG_TO_CSV,              # CSV option config key
-    DEFAULT_LOG_TO_CSV,           # Default for CSV option
+    CONF_LOG_TO_CSV,
+    DEFAULT_LOG_TO_CSV,
+    DEFAULT_MAX_TRANSACTIONS,
     STORAGE_VERSION,
     STORAGE_KEY_PREFIX,
     SERVICE_ADD_TRANSACTION,
@@ -32,8 +33,8 @@ from .const import (
     ATTR_BALANCE,
     ATTR_TRANSACTIONS,
     SIGNAL_UPDATE_SENSOR,
-    CSV_FILENAME_FORMAT,          # CSV filename format
-    CSV_HEADERS,                  # CSV headers list
+    CSV_FILENAME_FORMAT,
+    CSV_HEADERS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -229,6 +230,19 @@ class PocketMoneyDataManager:
         self._max_transactions = max_transactions
         self._data: Dict[str, Any] = {ATTR_BALANCE: 0.0, ATTR_TRANSACTIONS: []}
 
+        # === Ensure max_transactions is a positive integer ===
+        try:
+            # Convert the input to int and ensure it's at least 1
+            self._max_transactions = max(1, int(max_transactions))
+            _LOGGER.debug(f"[{self._kid_name}] Max transactions set to: {self._max_transactions}")
+        except (ValueError, TypeError):
+            # Fallback to default if conversion fails or input is invalid type
+            _LOGGER.warning(
+                f"[{self._kid_name}] Invalid max_transactions value received "
+                f"({max_transactions}). Defaulting to {DEFAULT_MAX_TRANSACTIONS}."
+            )
+            self._max_transactions = DEFAULT_MAX_TRANSACTIONS # Use default from const.py
+
         # CSV Logging Setup
         self._log_to_csv = log_to_csv
         self._csv_filepath: Optional[str] = None
@@ -244,20 +258,57 @@ class PocketMoneyDataManager:
                 self._log_to_csv = False # Disable if path setup fails
 
     async def async_load(self, initial_balance: float) -> None:
-        """Load data from store or initialize."""
+        """Load data from store or initialize with initial balance as first transaction."""
         loaded_data = await self._store.async_load()
 
         if loaded_data is None:
-            _LOGGER.info(f"Initializing pocket money data store for {self._kid_name} ({self._entry_id}) with balance: {initial_balance}")
-            self._data = {
-                ATTR_BALANCE: float(initial_balance),
-                ATTR_TRANSACTIONS: []
+            _LOGGER.info(f"Initializing pocket money data store for {self._kid_name} ({self._entry_id})")
+
+            # Ensure initial_balance is a float
+            initial_balance_float = float(initial_balance)
+
+            # Create the initial transaction record
+            now_utc = dt_util.utcnow()
+            timestamp_iso = now_utc.isoformat()
+            initial_transaction = {
+                "timestamp": timestamp_iso,
+                "amount": initial_balance_float, # Amount is the initial balance itself
+                "description": "Initial Balance", # Description for clarity
+                "balance_after": initial_balance_float # Balance after this setup transaction
             }
-            await self.async_save() # Save initial state
+            _LOGGER.debug(f"[{self._kid_name}] Created initial transaction record: {initial_transaction}")
+
+
+            # Initialize the data with the balance and the first transaction
+            self._data = {
+                ATTR_BALANCE: initial_balance_float,
+                # Only add the transaction if the balance is non-zero OR you always want an entry
+                # Let's always add it for consistency, even if balance is 0
+                ATTR_TRANSACTIONS: [initial_transaction]
+            }
+
+            # Save this initial state
+            await self.async_save()
+            _LOGGER.debug(f"[{self._kid_name}] Initial state saved.")
+
+            # --- Log this initial transaction to CSV if enabled ---
+            if self._log_to_csv and self._csv_filepath:
+                 _LOGGER.debug(f"[{self._kid_name}] Logging initial balance transaction to CSV: {self._csv_filepath}")
+                 try:
+                    # Run the blocking file I/O operation in HA's executor thread pool
+                    await self.hass.async_add_executor_job(
+                        self._write_transaction_to_csv, initial_transaction
+                    )
+                    _LOGGER.debug(f"[{self._kid_name}] Initial balance CSV write task submitted successfully.")
+                 except Exception as e:
+                    _LOGGER.error(f"[{self._kid_name}] Failed to submit initial balance CSV write task: {e}")
+            elif self._log_to_csv:
+                _LOGGER.warning(f"[{self._kid_name}] CSV logging enabled but file path is not set during init. Skipping CSV write.")
+
         else:
+            # Loading existing data - no changes needed here
             _LOGGER.debug(f"Loaded pocket money data for {self._kid_name} ({self._entry_id}) from store")
             self._data = loaded_data
-            # Ensure keys exist with defaults if loading older/corrupt data
             self._data.setdefault(ATTR_BALANCE, 0.0)
             self._data.setdefault(ATTR_TRANSACTIONS, [])
 
@@ -292,8 +343,12 @@ class PocketMoneyDataManager:
              self._data[ATTR_TRANSACTIONS] = []
         transactions_list = self._data[ATTR_TRANSACTIONS]
         transactions_list.insert(0, transaction) # Add to beginning (most recent first)
+
+        #trim the list as required to max_transactions
         if len(transactions_list) > self._max_transactions:
              self._data[ATTR_TRANSACTIONS] = transactions_list[:self._max_transactions] # Keep the newest ones
+        else:
+            self._data[ATTR_TRANSACTIONS] = transactions_list
 
 
         # Save the updated HA state (balance and transaction list attribute)
