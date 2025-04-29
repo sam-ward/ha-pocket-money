@@ -70,7 +70,8 @@ Configuration is done entirely via the Home Assistant UI. **You must add one ins
 5.  Click **Submit**.
 6.  **Repeat steps 2-5 for each child** you want to track.
 
-**WARNING: A word of caution on the Max Transactions**
+:warning: **A word of caution on setting the Max Transactions**
+
 This integration was written with the intent of storing kids pocket money. That is, something that will change only a couple of times a week.
 
 The transaction history is stored as an attribute of the entity. This means that any time the state changes (i.e. the balance), updated state and transaction history will be written to the recorder database.  Having the value of Max Transactions too large, or having too frequent transactions could cause the size of the recorder database to become very large.
