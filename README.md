@@ -15,7 +15,7 @@ This integration allows you to create separate pocket money accounts for each ch
 ---
 
 ## Installation
-<!--
+
 ### Option 1: HACS (Home Assistant Community Store) - Recommended
 
 1.  **If you don't have HACS installed:** Follow the HACS installation instructions [here](https://hacs.xyz/docs/configuration/basic).
@@ -33,8 +33,8 @@ This integration allows you to create separate pocket money accounts for each ch
 4.  **Restart Home Assistant:** Crucial for the integration to be loaded.
 
 *(Note: If this integration is ever added to the default HACS repository, step 2 becomes unnecessary.)*
--->
-### <!--Option 2:--> Manual Installation
+
+### Option 2: Manual Installation
 
 1.  Using the tool of choice (like Samba Share, VS Code Addon, etc.), copy the entire `pocket_money` directory from this repository into your Home Assistant `custom_components` directory.
     *   Your Home Assistant configuration directory might look like this:
