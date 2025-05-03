@@ -137,12 +137,14 @@ service: pocket_money.alice_add_transaction
 data:
   amount: 5.00
   description: Weekly Allowance
+response_variable: action_response
 
 service: pocket_money.bob_add_transaction
 data:
   amount: -2.50
   description: Bought Sweets
   timestamp: "2023-10-26T15:00:00Z" # Optional past timestamp
+response_variable: action_response
 ```
 
 ### Automation Example (Weekly Allowance)
@@ -167,6 +169,7 @@ action:
     data:
       amount: 5.00
       description: Weekly Allowance
+    response_variable: action_response
 mode: single
 ```
 *You can find the `device_id` by going to Settings -> Devices & Services -> Devices, finding the "Pocket Money (Alice)" device, and looking at the URL or Device Info.*
