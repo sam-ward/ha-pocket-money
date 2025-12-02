@@ -137,14 +137,14 @@ service: pocket_money.alice_add_transaction
 data:
   amount: 5.00
   description: Weekly Allowance
-response_variable: action_response
+response_variable: balance
 
 service: pocket_money.bob_add_transaction
 data:
   amount: -2.50
   description: Bought Sweets
-  timestamp: "2023-10-26T15:00:00Z" # Optional past timestamp
-response_variable: action_response
+  timestamp: "2023-10-26T15:00:00+0200" # Optional past timestamp
+response_variable: balance
 ```
 
 ### Automation Example (Weekly Allowance)
@@ -162,14 +162,11 @@ condition:
     weekday:
       - sat # Run on Saturdays
 action:
-  - service: pocket_money.alice_add_transaction # You can use the name here...
-    # ... but targeting the device is safer if the name changes
-    target:
-      device_id: <DEVICE_ID_FOR_ALICE> # Find this in Settings->Devices or via Dev Tools->States UI
+  - service: pocket_money.alice_add_transaction
     data:
       amount: 5.00
       description: Weekly Allowance
-    response_variable: action_response
+    response_variable: balance
 mode: single
 ```
 *You can find the `device_id` by going to Settings -> Devices & Services -> Devices, finding the "Pocket Money (Alice)" device, and looking at the URL or Device Info.*
