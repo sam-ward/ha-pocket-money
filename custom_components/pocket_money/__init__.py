@@ -11,6 +11,7 @@ from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.storage import Store
 from homeassistant.helpers.dispatcher import async_dispatcher_send
+from homeassistant.helpers.service import async_set_service_schema
 from homeassistant.util import dt as dt_util
 
 # Import helpers and constants
@@ -101,11 +102,37 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.services.async_register(
         DOMAIN,
         service_name,
-        # Use lambda to ensure the correct data_manager instance is passed
-        service_handler_wrapper, # Register the async wrapper
+        service_handler_wrapper,
         schema=SERVICE_TRANSACTION_SCHEMA,
-        supports_response=SupportsResponse.ONLY, # Service returns the new balance
+        supports_response=SupportsResponse.OPTIONAL,
     )
+    async_set_service_schema(hass, DOMAIN, service_name, {
+        "name": "Add Pocket Money Transaction",
+        "description": f"Adds or subtracts an amount from {kid_name}'s pocket money balance.",
+        "fields": {
+            "amount": {
+                "name": "Amount",
+                "description": "The amount to add (positive number) or subtract (negative number).",
+                "required": True,
+                "example": 5.00,
+                "selector": {"number": {"step": 0.01, "mode": "box"}},
+            },
+            "description": {
+                "name": "Description",
+                "description": "An optional description for the transaction (e.g., 'Chores', 'Movie Ticket').",
+                "required": False,
+                "example": "Weekly Allowance",
+                "selector": {"text": {}},
+            },
+            "timestamp": {
+                "name": "Transaction Timestamp (Optional)",
+                "description": "The date and time the transaction occurred. Defaults to the current time if omitted.",
+                "required": False,
+                "example": "2023-10-27T10:30:00+01:00",
+                "selector": {"datetime": {}},
+            },
+        },
+    })
     _LOGGER.debug(f"Registered service: {DOMAIN}.{service_name}")
 
     # Forward setup to the sensor platform
@@ -139,7 +166,7 @@ async def _handle_add_transaction(
                 raise ValueError("Parsed timestamp is None")
             # Ensure timestamp is timezone-aware (UTC)
             if transaction_timestamp.tzinfo is None:
-                 _LOGGER.warning(
+                 _LOGGER.debug(
                      f"Provided timestamp '{timestamp_str}' lacks timezone info, "
                      "assuming local timezone and converting to UTC."
                  )

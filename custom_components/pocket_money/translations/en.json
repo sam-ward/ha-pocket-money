@@ -16,7 +16,8 @@
         "error": {
             "kid_name_empty": "Please enter the kid's name.",
             "cannot_connect": "Failed to connect",
-            "unknown": "An unknown error occurred"
+            "unknown": "An unknown error occurred",
+            "invalid_timestamp": "Invalid timestamp format: '{timestamp}'. Please use ISO format (e.g., YYYY-MM-DDTHH:MM:SSZ)."
         },
         "abort": {
             "already_configured": "Pocket money tracker for this kid is already configured."
